@@ -1,0 +1,127 @@
+import requests
+import os
+from datetime import datetime
+
+# ============================================
+# PART 1: TV MAZE API - TOP 5 SHOWS
+# ============================================
+
+SHOW = "breaking"
+URL = f"https://api.tvmaze.com/search/shows?q={SHOW}"
+
+print("=" * 60)
+print("        TOP 5 TV SHOWS SEARCH RESULTS")
+print("=" * 60)
+
+response_obj = requests.get(URL)
+json_data = response_obj.json()
+
+# Create folder to save images
+if not os.path.exists("downloaded_images"):
+    os.makedirs("downloaded_images")
+
+# Loop through top 5 results
+for i in range(5):
+    show = json_data[i]["show"]
+
+    print(f"\n{'='*60}")
+    print(f"  SHOW #{i+1}")
+    print(f"{'='*60}")
+
+    # Show name
+    show_name = show.get("name", "N/A")
+    print(f"  Name     : {show_name}")
+
+    # Genres
+    genres = show.get("genres", [])
+    if genres:
+        print(f"  Genres   : {', '.join(genres)}")
+    else:
+        print(f"  Genres   : N/A")
+
+    # Summary - remove HTML tags
+    summary = show.get("summary", "No summary available")
+    summary = summary.replace("<p>", "").replace("</p>", "")
+    summary = summary.replace("<b>", "").replace("</b>", "")
+    print(f"  Summary  : {summary[:150]}...")
+
+    # Rating
+    rating = show.get("rating", {}).get("average", "N/A")
+    print(f"  Rating   : {rating}")
+
+    # Download show image
+    image_data = show.get("image")
+    if image_data:
+        image_url = image_data.get("medium")
+        if image_url:
+            img_response = requests.get(image_url)
+            # Clean filename
+            filename = show_name.replace(" ", "_").replace("/", "_")
+            image_path = f"downloaded_images/{filename}.jpg"
+            with open(image_path, "wb") as f:
+                f.write(img_response.content)
+            print(f"  Image    : Saved ✅")
+            print(f"  Path     : {os.path.abspath(image_path)}")
+    else:
+        print(f"  Image    : No image available")
+
+print(f"\n{'='*60}")
+print("  TV SHOWS DONE!")
+print(f"{'='*60}\n")
+
+
+# ============================================
+# PART 2: NASA APOD API - TOP 5 PICTURES
+# ============================================
+
+print("=" * 60)
+print("        NASA - ASTRONOMY PICTURE OF THE DAY")
+print("=" * 60)
+
+# NASA Open API - APOD (Astronomy Picture of the Day)
+# Using demo key - works without registration
+NASA_URL = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&count=5"
+
+nasa_response = requests.get(NASA_URL)
+nasa_data = nasa_response.json()
+
+# Create nasa folder
+if not os.path.exists("downloaded_images/nasa"):
+    os.makedirs("downloaded_images/nasa")
+
+for i, item in enumerate(nasa_data):
+    print(f"\n{'='*60}")
+    print(f"  NASA PICTURE #{i+1}")
+    print(f"{'='*60}")
+
+    title = item.get("title", "N/A")
+    date = item.get("date", "N/A")
+    explanation = item.get("explanation", "N/A")
+    media_type = item.get("media_type", "N/A")
+    url = item.get("url", "")
+    hdurl = item.get("hdurl", url)
+
+    print(f"  Title      : {title}")
+    print(f"  Date       : {date}")
+    print(f"  Explanation: {explanation[:150]}...")
+    print(f"  Media Type : {media_type}")
+
+    # Download image if it is an image not a video
+    if media_type == "image" and url:
+        try:
+            img_response = requests.get(url, timeout=10)
+            filename = title.replace(" ", "_").replace("/", "_")[:50]
+            image_path = f"downloaded_images/nasa/{filename}.jpg"
+            with open(image_path, "wb") as f:
+                f.write(img_response.content)
+            print(f"  Image      : Saved ✅")
+            print(f"  Path       : {os.path.abspath(image_path)}")
+        except:
+            print(f"  Image      : Could not download")
+    else:
+        print(f"  Image      : Video — skipped")
+
+print(f"\n{'='*60}")
+print("  NASA PICTURES DONE!")
+print(f"{'='*60}")
+print(f"\n All images saved in: {os.path.abspath('downloaded_images')}")

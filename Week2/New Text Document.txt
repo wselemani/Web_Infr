@@ -1,0 +1,28 @@
+end points and apis
+how do u know taht something has end oints and also somethingis an api
+custom headers
+rate limiting
+http server module
+api security
+
+Home work
+crs your eate a small program that querries your favourite reddit
+A simple HTML in CSS file to show this in the browser, it's fine. But I prefer the CLI. Now, some rules about the Reddit API, okay? Some ethical considerations that you have to make. Where was that? There is a rule that Reddit gives you. Aha, this one, okay? Please read API access rules properly so that you don't get banned from the Reddit API. They will ban your IP address if you don't follow these rules, okay? So you'll have to use a VPN to cheat that. Now, one of the main things that they tell you to do is to never lie about your user agent. Why do you think this is? This part. This part of their rules. Why do you think that exists? They have this rule, okay? You must use a user agent where possible. Change your client's user agent string to something unique and descriptive, including the target platform, a unique application identifier, a version string, and your username, as contact information in the following format. Many default user agents, like Python, urllib, or Java, are drastically limited to be very unique and descriptive in the following. That means if you make a request from curl, or from Python, or the requests library, or any other programmatic user agent, they will limit the amount of requests you can send, okay? This is another example of rate limiting. And they do that because usually these low-effort bots, they don't change the user agent to something descriptive, and they filter them that way. But sometimes people lie about their user agent, right? Is there anything stopping me from going to my script and then copying the user agent from my Chrome, and then putting it as a string and passing that as a header, and making a request? There is nothing, right? But it's just an ethical consideration. See? So whenever there's a rule like this, just try to follow it. Don't lie about your user agent, okay? So that's just an ethical consideration. So you will create something like... If you don't have a Reddit, it's fine; you don't have to put your Reddit username, right? But if you have a Reddit, put your username. But you need this at least. So you can say the platform, you can say Python or whatever, you can say Web, and then the app ID, you don't have to put that; you can just put version number, okay? Or you can copy-paste the user agent from your Chrome and put it there. But I just have to tell you the ethical considerations you have to make. Any other questions? Repeat the instructions. Repeat the instructions. The instructions: you create a program that queries your favorite Reddit page. It could be r slash programming, r slash whatever, any one. And you have to show the name of the page, the description of the page, the rules of that community, the number of subscribers, and top 10 posts. This is a homework. It's not optional, guys, okay?Wezzie, your homework is to create a Python program that retrieves information from a Reddit community (subreddit) and displays it in the terminal (CLI). Your lecturer said an HTML page is also acceptable, but he prefers the CLI.
+1. What your program must display
+Choose one subreddit, for example r/programming, and retrieve these five things:
+1. Community name — the name of the subreddit.
+2. Description — what the community is about.
+3. Community rules — the rules members are expected to follow.
+4. Number of subscribers — how many subscribers the community has.
+5. Top 10 posts — display the ten top posts from that community.
+You can choose another subreddit that interests you.
+2. Follow Reddit's API rules
+Your lecturer emphasized ethical API access. The important points are:
+- Use an honest User-Agent: identify your actual Python application rather than pretending to be Chrome.
+- Respect rate limits: do not send excessive requests.
+- Do not bypass restrictions using a VPN: Reddit's terms prohibit circumventing API limits. A VPN is not an appropriate workaround for a block. 
+  
+  Reddit Help
+  +1
+- Follow authentication requirements: use the authorized access method required by Reddit.
+For example, your Python code could identify your application like this:
